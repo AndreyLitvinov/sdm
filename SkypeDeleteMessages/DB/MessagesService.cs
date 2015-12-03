@@ -26,7 +26,7 @@ namespace SkypeDeleteMessages.DB
 
 		public List<Message> getMessagesByConvo_id(int convo_id)
 		{
-			return null;
+			return new List<Message>();
 		}
 
 		public void DeleteMesageById(int id_message)

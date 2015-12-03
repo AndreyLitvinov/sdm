@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SkypeDeleteMessages.Model
 {
-	class Message
+	public class Message
 	{
 		public int? Id { get; set; }
 		public int? convo_id { get; set; }

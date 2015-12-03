@@ -3,23 +3,50 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525">
 	<Grid>
-		<StackPanel>
-			<Label>Перед выполнение действий необходимо закрыть скайп</Label>
+ 		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="2*"></ColumnDefinition>
+			<ColumnDefinition Width="1*"></ColumnDefinition>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="1*"></RowDefinition>
+			<RowDefinition Height="1*"></RowDefinition>
+			<RowDefinition Height="1*"></RowDefinition>
+			<RowDefinition Height="5*"></RowDefinition>
+			<RowDefinition Height="5*"></RowDefinition>
+			<RowDefinition Height="1*"></RowDefinition>
+		</Grid.RowDefinitions>
+		<Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+			<MenuItem Header="Инормация">
+				<MenuItem Header="Инструкция"></MenuItem>
+				<MenuItem Header="Автор"></MenuItem>
+			</MenuItem>
+		</Menu>
+		<Label Grid.Row="1" Grid.ColumnSpan="2">Прочтите инструкцию</Label>
+		<TextBox Grid.Row="2" Grid.Column="0" IsEnabled="False" TextWrapping="Wrap" Name="TextBoxURLDB" Text="Путь к файлу бд"/>
+		<Button Grid.Row="2" Grid.Column="1" Name="ButtonOpenFile">Открыть файл</Button>
+		<DataGrid Grid.Row="3" Grid.ColumnSpan="2" Name="DataGridConversations" >
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="Название" Width="175" Binding="{Binding Path=Id}"></DataGridTextColumn>
+				<DataGridTextColumn Header="Участники" Binding="{Binding Path=Name}"></DataGridTextColumn>
+			</DataGrid.Columns>
+		</DataGrid>
+		<DataGrid Grid.Row="4" Grid.ColumnSpan="2" Name="DataGridMessages" >
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="Автор" Width="175" Binding="{Binding Path=Author}"></DataGridTextColumn>
+				<DataGridTextColumn Header="Сообщение" Binding="{Binding Path=Text}"/>
+			</DataGrid.Columns>
+		</DataGrid>
+		<Button Grid.Row="5" Grid.Column="2">Удалить всю переписку</Button>
+		<!--<StackPanel>
+			
 			<Label>Лучше сохранить базу данный (main.db) в другом месте перед удалением сообщений, при необходимости будет возможность восстановить данные</Label>
-			<TextBox TextWrapping="Wrap" Name="TextBoxURLDB" Text="Путь к файлу бд" VerticalAlignment="Top"/>
-			<DataGrid Name="DataGridConversations" >
-				<DataGrid.Columns>
-					<DataGridTextColumn Header="Название" Width="175" Binding="{Binding Path=Id}"></DataGridTextColumn>
-					<DataGridTextColumn Header="Участники" Binding="{Binding Path=Name}"></DataGridTextColumn>
-				</DataGrid.Columns>
-			</DataGrid>
-			<DataGrid Name="DataGridMessages" >
-				<DataGrid.Columns>
-					<DataGridTextColumn Header="Автор" Width="175" Binding="{Binding Path=Author}"></DataGridTextColumn>
-					<DataGridTextColumn Header="Сообщение" Binding="{Binding Path=Text}"></DataGridTextColumn>
-				</DataGrid.Columns>
-			</DataGrid>
-			<Button>Удалить всю переписку</Button>
-		</StackPanel>
+			<StackPanel Orientation="Horizontal">
+				
+				
+			</StackPanel>
+			
+
+			
+		</StackPanel>-->
 	</Grid>
 </Window>
