@@ -24,6 +24,11 @@ namespace SkypeDeleteMessages.DB
 			}
 		}
 
+		public MessagesService(SQLiteConnection connectionSqlite)
+		{
+			this.connection = connectionSqlite;
+		}
+
 		public List<Message> getMessagesByConvo_id(int convo_id)
 		{
 			List<Message> result = new List<Message>();

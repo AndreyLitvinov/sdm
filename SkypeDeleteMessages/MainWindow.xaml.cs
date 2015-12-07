@@ -3,6 +3,8 @@ using SkypeDeleteMessages.DB;
 using SkypeDeleteMessages.Model;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +30,8 @@ namespace SkypeDeleteMessages
 			InitializeComponent();
 		}
 
+		private SQLiteConnection connection { get; set; }
+
 		private void ButtonOpenFile_Click(object sender, RoutedEventArgs e)
 		{
 			// Create OpenFileDialog
@@ -45,18 +49,39 @@ namespace SkypeDeleteMessages
 			{
 				// Open document
 				string filename = dlg.FileName;
-				
+
 				TextBoxURLDB.Text = filename;
-				this.UpdateDataGridConversations(filename);
+				this.connection = new SQLiteConnection(string.Format("Data Source={0};", filename));
+				this.connection.Open();
+
+				if (this.connection.State != ConnectionState.Open)
+				{
+					throw new Exception("Не открыто подключение");
+				}
+				this.UpdateDataGridConversations();
 			}
 		}
 
-		private void UpdateDataGridConversations(string fileURL) 
+		private void UpdateDataGridConversations()
 		{
-			MessagesService mService = new MessagesService(fileURL);
-			List<Message> mes = mService.getMessagesByConvo_id(2621);
-			this.DataGridMessages.ItemsSource = mes;
+			ConversationsService cService = new ConversationsService(this.connection);
+			List<Conversations> conv = cService.getAllConversations();
+			this.DataGridConversations.ItemsSource = conv;
 			//this.DataGridMessages.bin
+		}
+
+		private void DataGridConversations_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+
+			Conversations itemSel = this.DataGridConversations.SelectedItem as Conversations;
+			if (itemSel != null)
+			{
+				MessagesService mService = new MessagesService(this.connection);
+				List<Message> mes = mService.getMessagesByConvo_id((int)itemSel.Id);
+				this.DataGridMessages.ItemsSource = mes;
+			}
+
+
 		}
 	}
 }

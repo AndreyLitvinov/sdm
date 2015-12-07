@@ -24,10 +24,10 @@
 		<Label Grid.Row="1" Grid.ColumnSpan="2">Прочтите инструкцию</Label>
 		<TextBox Grid.Row="2" Grid.Column="0" IsEnabled="False" TextWrapping="Wrap" Name="TextBoxURLDB" Text="Путь к файлу бд"/>
 		<Button Grid.Row="2" Grid.Column="1" Name="ButtonOpenFile" Click="ButtonOpenFile_Click">Открыть файл</Button>
-		<DataGrid Grid.Row="3" Grid.ColumnSpan="2" Name="DataGridConversations" >
+		<DataGrid Grid.Row="3" Grid.ColumnSpan="2" Name="DataGridConversations" IsReadOnly="True" AutoGenerateColumns="False" SelectionChanged="DataGridConversations_SelectionChanged" SelectionMode="Single">
 			<DataGrid.Columns>
-				<DataGridTextColumn Header="Название" Width="175" Binding="{Binding Path=Id}"></DataGridTextColumn>
-				<DataGridTextColumn Header="Участники" Binding="{Binding Path=Name}"></DataGridTextColumn>
+				<DataGridTextColumn  Header="Название" Binding="{Binding Path=Name}" CanUserResize="False"></DataGridTextColumn>
+				<!--<DataGridTextColumn Header="Участники" Binding="{Binding Path=Identitys}"></DataGridTextColumn>-->
 			</DataGrid.Columns>
 		</DataGrid>
 		<DataGrid Grid.Row="4" Grid.ColumnSpan="2" Name="DataGridMessages" AutoGenerateColumns="False" IsReadOnly="True">

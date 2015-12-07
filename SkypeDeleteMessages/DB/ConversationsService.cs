@@ -15,7 +15,7 @@ namespace SkypeDeleteMessages.DB
 
 		public ConversationsService(string connectionString)
 		{
-			this.connection = new SQLiteConnection(connectionString);
+			this.connection = new SQLiteConnection(string.Format("Data Source={0};", connectionString));
 			this.connection.Open();
 			if (this.connection.State != ConnectionState.Open)
 			{
@@ -23,17 +23,36 @@ namespace SkypeDeleteMessages.DB
 			}
 		}
 
+		public ConversationsService(SQLiteConnection connectionSqlite)
+		{
+			this.connection = connectionSqlite;
+		}
+
 		public List<Conversations> getAllConversations()
 		{
-			//				fmd.CommandText = @"
-			//SELECT 
-			//Conversations.id,
-			//Conversations.displayname
-			//FROM 
-			//Conversations
-			//WHERE 
-			//Conversations.id = @convo_id;";
-			return null;
+			List<Conversations> result = new List<Conversations>();
+			using (SQLiteCommand fmd = connection.CreateCommand())
+			{
+				fmd.CommandText = @"
+SELECT 
+Conversations.id,
+Conversations.displayname,
+Conversations.identity
+FROM 
+Conversations;
+";
+				fmd.CommandType = CommandType.Text;
+				SQLiteDataReader r = fmd.ExecuteReader();
+				while (r.Read())
+				{
+					Conversations tmp = new Conversations();
+					tmp.Id = Convert.ToInt32(r["id"]);
+					tmp.Identitys = Convert.ToString(r["identity"]);
+					tmp.Name = Convert.ToString(r["displayname"]);
+					result.Add(tmp);
+				}
+			}
+			return result;
 		}
 	}
 }
