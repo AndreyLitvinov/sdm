@@ -16,7 +16,7 @@ namespace SkypeDeleteMessages.DB
 
 		public MessagesService(string connectionString)
 		{
-			this.connection = new SQLiteConnection(connectionString);
+			this.connection = new SQLiteConnection(string.Format("Data Source={0};",connectionString));
 			this.connection.Open();
 			if (this.connection.State != ConnectionState.Open)
 			{
@@ -26,7 +26,36 @@ namespace SkypeDeleteMessages.DB
 
 		public List<Message> getMessagesByConvo_id(int convo_id)
 		{
-			return new List<Message>();
+			List<Message> result = new List<Message>();
+			using (SQLiteCommand fmd = connection.CreateCommand())
+			{
+				
+				fmd.CommandText = @"
+SELECT
+Messages.id,
+Messages.convo_id,
+Messages.author,
+Messages.body_xml
+FROM
+Messages
+WHERE Messages.convo_id = @convoId;
+";
+				fmd.CommandType = CommandType.Text;
+				fmd.Parameters.Add("@convoId", DbType.Int32);
+				fmd.Parameters["@convoId"].Value = convo_id;
+
+				SQLiteDataReader r = fmd.ExecuteReader();
+				while (r.Read())
+				{
+					Message tmp = new Message();
+					tmp.Id = Convert.ToInt32(r["id"]);
+					tmp.convo_id = Convert.ToInt32(r["convo_id"]);
+					tmp.Author = Convert.ToString(r["author"]);
+					tmp.Text = Convert.ToString(r["body_xml"]);
+					result.Add(tmp);
+				}
+			}
+			return result;
 		}
 
 		public void DeleteMesageById(int id_message)

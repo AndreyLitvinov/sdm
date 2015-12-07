@@ -25,6 +25,14 @@ namespace SkypeDeleteMessages.DB
 
 		public List<Conversations> getAllConversations()
 		{
+			//				fmd.CommandText = @"
+			//SELECT 
+			//Conversations.id,
+			//Conversations.displayname
+			//FROM 
+			//Conversations
+			//WHERE 
+			//Conversations.id = @convo_id;";
 			return null;
 		}
 	}

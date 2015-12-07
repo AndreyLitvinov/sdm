@@ -2,8 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525">
-	<Grid>
- 		<Grid.ColumnDefinitions>
+	<Grid Margin="5,0,5,5">
+		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="2*"></ColumnDefinition>
 			<ColumnDefinition Width="1*"></ColumnDefinition>
 		</Grid.ColumnDefinitions>
@@ -23,30 +23,19 @@
 		</Menu>
 		<Label Grid.Row="1" Grid.ColumnSpan="2">Прочтите инструкцию</Label>
 		<TextBox Grid.Row="2" Grid.Column="0" IsEnabled="False" TextWrapping="Wrap" Name="TextBoxURLDB" Text="Путь к файлу бд"/>
-		<Button Grid.Row="2" Grid.Column="1" Name="ButtonOpenFile">Открыть файл</Button>
+		<Button Grid.Row="2" Grid.Column="1" Name="ButtonOpenFile" Click="ButtonOpenFile_Click">Открыть файл</Button>
 		<DataGrid Grid.Row="3" Grid.ColumnSpan="2" Name="DataGridConversations" >
 			<DataGrid.Columns>
 				<DataGridTextColumn Header="Название" Width="175" Binding="{Binding Path=Id}"></DataGridTextColumn>
 				<DataGridTextColumn Header="Участники" Binding="{Binding Path=Name}"></DataGridTextColumn>
 			</DataGrid.Columns>
 		</DataGrid>
-		<DataGrid Grid.Row="4" Grid.ColumnSpan="2" Name="DataGridMessages" >
+		<DataGrid Grid.Row="4" Grid.ColumnSpan="2" Name="DataGridMessages" AutoGenerateColumns="False" IsReadOnly="True">
 			<DataGrid.Columns>
 				<DataGridTextColumn Header="Автор" Width="175" Binding="{Binding Path=Author}"></DataGridTextColumn>
 				<DataGridTextColumn Header="Сообщение" Binding="{Binding Path=Text}"/>
 			</DataGrid.Columns>
 		</DataGrid>
 		<Button Grid.Row="5" Grid.Column="2">Удалить всю переписку</Button>
-		<!--<StackPanel>
-			
-			<Label>Лучше сохранить базу данный (main.db) в другом месте перед удалением сообщений, при необходимости будет возможность восстановить данные</Label>
-			<StackPanel Orientation="Horizontal">
-				
-				
-			</StackPanel>
-			
-
-			
-		</StackPanel>-->
 	</Grid>
 </Window>
