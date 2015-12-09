@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkypeDeleteMessages", "SkypeDeleteMessages\SkypeDeleteMessages.csproj", "{FCC878DB-F4BB-4DE3-A4D5-59EFD3BA7FBB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF.Bootstrap", "..\..\..\..\Downloads\WPF.Bootstrap-master\WPF.Bootstrap-master\WPF.Bootstrap\WPF.Bootstrap.csproj", "{734839C0-6FA8-4514-BD97-EABD72B35246}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF.Bootstrap", "WPF.Bootstrap\WPF.Bootstrap.csproj", "{734839C0-6FA8-4514-BD97-EABD72B35246}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
