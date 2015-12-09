@@ -1,19 +1,20 @@
 ﻿<Window x:Class="SkypeDeleteMessages.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
+		xmlns:bootstrap="http://github.com/scheshan/bootstrap"
+        Title="MainWindow" Height="550" Width="700">
 	<Grid Margin="5,0,5,5">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="2*"></ColumnDefinition>
 			<ColumnDefinition Width="1*"></ColumnDefinition>
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="1*"></RowDefinition>
-			<RowDefinition Height="1*"></RowDefinition>
-			<RowDefinition Height="1*"></RowDefinition>
+			<RowDefinition Height="20"></RowDefinition>
+			<RowDefinition Height="50"></RowDefinition>
+			<RowDefinition Height="40"></RowDefinition>
 			<RowDefinition Height="5*"></RowDefinition>
 			<RowDefinition Height="5*"></RowDefinition>
-			<RowDefinition Height="1*"></RowDefinition>
+			<RowDefinition Height="40"></RowDefinition>
 		</Grid.RowDefinitions>
 		<Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
 			<MenuItem Header="Инормация">
@@ -21,21 +22,61 @@
 				<MenuItem Header="Автор"></MenuItem>
 			</MenuItem>
 		</Menu>
-		<Label Grid.Row="1" Grid.ColumnSpan="2">Прочтите инструкцию</Label>
-		<TextBox Grid.Row="2" Grid.Column="0" IsEnabled="False" TextWrapping="Wrap" Name="TextBoxURLDB" Text="Путь к файлу бд"/>
-		<Button Grid.Row="2" Grid.Column="1" Name="ButtonOpenFile" Click="ButtonOpenFile_Click">Открыть файл</Button>
-		<DataGrid Grid.Row="3" Grid.ColumnSpan="2" Name="DataGridConversations" IsReadOnly="True" AutoGenerateColumns="False" SelectionChanged="DataGridConversations_SelectionChanged" SelectionMode="Single">
-			<DataGrid.Columns>
-				<DataGridTextColumn  Header="Название" Binding="{Binding Path=Name}" CanUserResize="False"></DataGridTextColumn>
-				<!--<DataGridTextColumn Header="Участники" Binding="{Binding Path=Identitys}"></DataGridTextColumn>-->
-			</DataGrid.Columns>
-		</DataGrid>
-		<DataGrid Grid.Row="4" Grid.ColumnSpan="2" Name="DataGridMessages" AutoGenerateColumns="False" IsReadOnly="True">
-			<DataGrid.Columns>
-				<DataGridTextColumn Header="Автор" Width="175" Binding="{Binding Path=Author}"></DataGridTextColumn>
-				<DataGridTextColumn Header="Сообщение" Binding="{Binding Path=Text}"/>
-			</DataGrid.Columns>
-		</DataGrid>
-		<Button Grid.Row="5" Grid.Column="2">Удалить всю переписку</Button>
+		<bootstrap:Alert Type="Danger" Grid.Row="1" Grid.ColumnSpan="2">
+			<TextBlock>
+				<Run Text="Важно!" FontWeight="Bold"/>
+				<Run Text="Прочтите инструкцию"/>
+			</TextBlock>
+		</bootstrap:Alert>
+		<TextBox Grid.Row="2" Grid.Column="0" IsEnabled="False" TextWrapping="Wrap" Name="TextBoxURLDB" Text="Путь к файлу бд" Margin="2"/>
+		<Button Grid.Row="2" Grid.Column="1" Name="ButtonOpenFile" Click="ButtonOpenFile_Click" Content="Открыть файл" Style="{StaticResource SuccessButton}" Margin="2"/>
+		<bootstrap:BootstrapPanel  Grid.Row="3" Grid.ColumnSpan="2" Margin="5" Type="Primary" Header="Диалоги">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="35"></RowDefinition>
+					<RowDefinition Height="1*"></RowDefinition>
+				</Grid.RowDefinitions>
+				<StackPanel Orientation="Horizontal" Grid.Row="0">
+					<TextBox Name="TextBoxFindeCon" Width="200" HorizontalAlignment="Left" GotFocus="TextBoxFinde_GotFocus" LostFocus="TextBoxFinde_LostFocus" TextChanged="TextBoxFindeCon_TextChanged"/>
+					<Button Name="CleanerFindeCon" Style="{StaticResource DangerButton}" Content="X" Click="CleanerFindeCon_Click"/>
+				</StackPanel>
+				<ListBox Grid.Row="1" Name="ListBoxConversations" SelectionChanged="ListBoxConversations_SelectionChanged">
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<TextBlock Padding="5,0,5,0" Text="{Binding Path=Name}" TextWrapping="WrapWithOverflow"/>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</Grid>
+		</bootstrap:BootstrapPanel>
+		<bootstrap:BootstrapPanel  Grid.Row="4" Grid.ColumnSpan="2" Margin="5" Type="Primary" Header="Сообщения">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="35"></RowDefinition>
+					<RowDefinition Height="1*"></RowDefinition>
+				</Grid.RowDefinitions>
+				<StackPanel Grid.Row="0" Orientation="Horizontal">
+					<TextBox Name="TextBoxFindeMes" Width="200" HorizontalAlignment="Left" GotFocus="TextBoxFinde_GotFocus" LostFocus="TextBoxFinde_LostFocus" TextChanged="TextBoxFindeMes_TextChanged" />
+					<Button Name="CleanerFindeMes" Style="{StaticResource DangerButton}" Content="X" Click="CleanerFindeMes_Click"/>
+				</StackPanel>
+				<ListBox Grid.Row="1" Name="ListBoxMessages" SelectionChanged="ListBoxConversations_SelectionChanged">
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<StackPanel Orientation="Horizontal">
+								<Button Style="{StaticResource DangerButton}" Content="-" HorizontalAlignment="Right" Name="ButtonDeleteMessage" VerticalAlignment="Top" Tag="{Binding Path=Id}" Click="ButtonDeleteMessage_Click"/>
+								<Border Background="{StaticResource BgInfo}" Margin="10" Padding="10" TextBlock.Foreground="#333">
+									<TextBlock Padding="5,0,5,0" Text="{Binding Path=Author}" />
+								</Border>
+								<TextBlock TextWrapping="Wrap" Padding="5,0,5,0" Text="{Binding Path=Text}" />
+							</StackPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</Grid>
+		</bootstrap:BootstrapPanel>
+		<Border Name="BorderTBInfo" Grid.Row="5" Grid.Column="0" Background="{StaticResource BgDanger}" Padding="10" Margin="2" TextBlock.Foreground="#333">
+			<TextBlock Name="TextBlockInfo" Text="Готово"/>
+		</Border>
+		<Button Name="ButtomDeeleteMessages" Grid.Row="5" Grid.Column="2" Style="{StaticResource DangerButton}" Margin="2" Content="Удалить всю переписку" Click="ButtomDeeleteMessages_Click"/>
 	</Grid>
 </Window>

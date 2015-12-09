@@ -65,12 +65,36 @@ WHERE Messages.convo_id = @convoId;
 
 		public void DeleteMesageById(int id_message)
 		{
+			using (SQLiteCommand fmd = connection.CreateCommand())
+			{
 
+				fmd.CommandText = @"
+DELETE FROM Messages
+WHERE Messages.id = @mesId;
+";
+				fmd.CommandType = CommandType.Text;
+				fmd.Parameters.Add("@mesId", DbType.Int32);
+				fmd.Parameters["@mesId"].Value = id_message;
+
+				fmd.ExecuteNonQuery();
+			}
 		}
 
 		public void DeleteMessagesByConvo_id(int convo_id)
 		{
+			using (SQLiteCommand fmd = connection.CreateCommand())
+			{
 
+				fmd.CommandText = @"
+DELETE FROM Messages
+WHERE Messages.convo_id = @convoId;
+";
+				fmd.CommandType = CommandType.Text;
+				fmd.Parameters.Add("@convoId", DbType.Int32);
+				fmd.Parameters["@convoId"].Value = convo_id;
+
+				fmd.ExecuteNonQuery();
+			}
 		}
 	}
 }
