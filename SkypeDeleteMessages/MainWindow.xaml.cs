@@ -29,6 +29,8 @@ namespace SkypeDeleteMessages
 		public MainWindow()
 		{
 			InitializeComponent();
+			this.TextBoxURLDB.Text = string.Format("{0}\\Skype\\mifodiman\\main.db", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
+			this.OpenDB(this.TextBoxURLDB.Text);
 			this.TextBoxFindeMes.Text =
 					this.TextBoxFindeCon.Text = CONST_FINDE;
 		}
@@ -86,7 +88,7 @@ namespace SkypeDeleteMessages
 				// Set filter for file extension and default file extension
 				dlg.DefaultExt = ".db";
 				dlg.Filter = "File DATABASE (.db)|*.db";
-
+				dlg.InitialDirectory = string.Format("{0}\\Skype\\", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
 				// Display OpenFileDialog by calling ShowDialog method
 				Nullable<bool> result = dlg.ShowDialog();
 
@@ -97,7 +99,20 @@ namespace SkypeDeleteMessages
 					string filename = dlg.FileName;
 
 					TextBoxURLDB.Text = filename;
-					this.connection = new SQLiteConnection(string.Format("Data Source={0};", filename));
+					this.OpenDB(filename);
+				}
+			}
+			catch (Exception ex)
+			{
+				this.SetStatusWork(StatusWork.Error, ex.Message);
+			}
+		}
+
+		public void OpenDB(string FileDB) 
+		{
+			try
+			{
+				this.connection = new SQLiteConnection(string.Format("Data Source={0};", FileDB));
 					this.connection.Open();
 
 					if (this.connection.State != ConnectionState.Open)
@@ -108,14 +123,11 @@ namespace SkypeDeleteMessages
 					cService = new ConversationsService(this.connection);
 					this.SetStatusWork(StatusWork.Success);
 					this.UpdateListBoxConversations();
-				}
-
 			}
 			catch (Exception ex)
 			{
 				this.SetStatusWork(StatusWork.Error, ex.Message);
 			}
-
 		}
 
 		private void UpdateListBoxConversations()
@@ -132,14 +144,14 @@ namespace SkypeDeleteMessages
 			}
 		}
 
-		private void UpdateListBoxMessages()
+		private async void UpdateListBoxMessages()
 		{
 			try
 			{
 				Conversations itemSel = this.ListBoxConversations.SelectedItem as Conversations;
 				if (itemSel != null)
 				{
-					this.currentListMessages = mService.getMessagesByConvo_id((int)itemSel.Id);
+					this.currentListMessages = await mService.getMessagesByConvo_id((int)itemSel.Id);
 					string countMes = "";
 					if (this.currentListMessages.Count != 0)
 					{

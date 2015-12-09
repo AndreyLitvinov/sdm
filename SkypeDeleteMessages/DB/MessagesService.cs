@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.SQLite;
 using System.Linq;
 using System.Text;
@@ -29,7 +30,7 @@ namespace SkypeDeleteMessages.DB
 			this.connection = connectionSqlite;
 		}
 
-		public List<Message> getMessagesByConvo_id(int convo_id)
+		public async Task<List<Message>> getMessagesByConvo_id(int convo_id)
 		{
 			List<Message> result = new List<Message>();
 			using (SQLiteCommand fmd = connection.CreateCommand())
@@ -49,7 +50,7 @@ WHERE Messages.convo_id = @convoId;
 				fmd.Parameters.Add("@convoId", DbType.Int32);
 				fmd.Parameters["@convoId"].Value = convo_id;
 
-				SQLiteDataReader r = fmd.ExecuteReader();
+				DbDataReader r = await fmd.ExecuteReaderAsync();
 				while (r.Read())
 				{
 					Message tmp = new Message();
